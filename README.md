@@ -133,6 +133,46 @@ curl -fsSL https://raw.githubusercontent.com/darrenhinde/OpenAgentsControl/main/
 bash install.sh
 ```
 
+### Alternative: Install with Nix (Flake)
+
+Prefer a declarative setup? You can install OAC through this repository's built-in flake module.
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    oac.url = "github:darrenhinde/OpenAgentsControl";
+  };
+
+  outputs = { nixpkgs, home-manager, oac, ... }: {
+    homeConfigurations.my-user = home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs { system = "x86_64-linux"; };
+      modules = [
+        oac.homeManagerModules.default
+        {
+          programs.opencode = {
+            enable = true;
+            oac = {
+              enable = true;
+              profile = "developer"; # essential|developer|business|full|advanced
+            };
+          };
+        }
+      ];
+    };
+  };
+}
+```
+
+Apply with Home Manager:
+
+```bash
+home-manager switch --flake .#my-user
+```
+
 ### Keep Updated
 
 ```bash
