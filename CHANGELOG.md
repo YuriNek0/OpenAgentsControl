@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+## [0.8.0] - 2026-05-03
+
+### Changes
+- feat: added nix flake support
+
 ## [0.7.1] - 2026-01-30
 
 ### Changes
