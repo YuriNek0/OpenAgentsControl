@@ -205,6 +205,48 @@ Add a login endpoint
 
 ---
 
+## For Nix Users: Installing With Flake Module
+
+If you use Nix, you can install OAC through this repository's built-in flake module.
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    oac.url = "github:darrenhinde/OpenAgentsControl";
+  };
+
+  outputs = { nixpkgs, home-manager, oac, ... }: {
+    homeConfigurations.my-user = home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs { system = "x86_64-linux"; };
+      modules = [
+        oac.homeManagerModules.default
+        {
+          programs.opencode = {
+            enable = true;
+            oac = {
+              enable = true;
+              profile = "developer"; # essential|developer|business|full|advanced
+            };
+          };
+        }
+      ];
+    };
+  };
+}
+```
+
+Apply with Home Manager:
+
+```bash
+home-manager switch --flake .#my-user
+```
+
+---
+
 ## 💡 The Context System: Your Secret Weapon
 
 **The problem with AI code:** It doesn't match your patterns. You spend hours refactoring.
