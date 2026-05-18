@@ -205,45 +205,22 @@ Add a login endpoint
 
 ---
 
-## For Nix Users: Installing With Flake Module
+## For Nix Users
 
-If you use Nix, you can install OAC through this repository's built-in flake module.
+If you use Nix, OAC includes a Home Manager flake module:
 
 ```nix
 {
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
-    oac.url = "github:darrenhinde/OpenAgentsControl";
-  };
-
-  outputs = { nixpkgs, home-manager, oac, ... }: {
-    homeConfigurations.my-user = home-manager.lib.homeManagerConfiguration {
-      pkgs = import nixpkgs { system = "x86_64-linux"; };
-      modules = [
-        oac.homeManagerModules.default
-        {
-          programs.opencode = {
-            enable = true;
-            oac = {
-              enable = true;
-              profile = "developer"; # essential|developer|business|full|advanced
-            };
-          };
-        }
-      ];
-    };
+  programs.opencode.oac = {
+    enable = true;
+    profile = "developer";
   };
 }
 ```
 
-Apply with Home Manager:
+Import `oac.homeManagerModules.default`, then apply with `home-manager switch --flake .#my-user`.
 
-```bash
-home-manager switch --flake .#my-user
-```
+For the full setup, available `programs.opencode.oac.*` options, context reference behavior, bootstrap files, and built-in permission settings, see [docs/getting-started/nix-home-manager.md](docs/getting-started/nix-home-manager.md).
 
 ---
 
