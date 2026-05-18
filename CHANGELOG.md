@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+## [0.8.0] - 2026-05-18
+
+### Changes
+- feat(nix): builtin permission directives; document and harden Home Manager OAC installation; fixes to soft links and missing navigations
+
 ## [0.7.1] - 2026-01-30
 
 ### Changes
